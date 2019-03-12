@@ -4,6 +4,11 @@
 #' @param ... name-value pairs of expressions defining range specifications
 #' @param .group optional group column (see examples)
 #'
+#' @return
+#'
+#' An object of the same class as `object` but with no periodic subclass or
+#' periodicity specifications and wrapped dimensions.
+#'
 #' @examples
 #'
 #' x <- seq(0, 360 - 20, by = 20)
@@ -49,6 +54,7 @@ wrap <- function(object, ...) {
   }
   UseMethod("wrap")
 }
+
 
 #' @export
 #' @rdname wrap
@@ -103,13 +109,13 @@ wrap.periodic_df <- function(object, ..., .group = NULL) {
 
   width.w <- diff(range(wrap))
   width.p <- diff(range(period))
+  x <- data[[column]]
 
-  shift <- (min(wrap) - start.p)/width.p
+  shift <- (min(wrap) - min(x))/width.p
   shift <- floor(shift)
 
   times <- ceiling(width.w/width.p) + 1
 
-  x <- data[[column]]
   if (!is.null(group))  new_group <- data[[group]]
 
   new_x <- rep(x + shift*width.p, times = times)
@@ -133,9 +139,4 @@ wrap.periodic_df <- function(object, ..., .group = NULL) {
   return(data)
 }
 
-#' #' @export
-#' #' @rdname wrap
-#' wrap.Layer <- function(object, ...) {
-#'   cols <- as.list(substitute(list(...))[-1])
-#'   structure(list(layer = object, cols = cols), class = "periodic_layer")
-#' }
+

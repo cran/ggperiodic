@@ -7,10 +7,14 @@
 #' @param ... name-value pairs of expressions defining the period
 #' @param period a numeric vector whose range defines the period
 #'
-#' @details
+#' @return
 #'
-#' This is a generic function and ggperiodic provides methods for vectors, data frames
-#' and ggplot2 Layers (geoms and stats).
+#' An object of subclass `periodic_df` or `periodic_v`.
+#'
+#' If `object` is of class `data.table`, then it will modify the object by
+#' reference. To modify this behaviour, use
+#' `options(ggperiodic.data.table.copy = TRUE)`. `setperiodic()` will modify a
+#' `data.table` by reference bypassing the global option.
 #'
 #' @examples
 #' library(ggplot2)
@@ -53,12 +57,17 @@ periodic.default <- function(object, period, ...) {
 #' @export
 #' @rdname periodic
 #' @method periodic data.frame
+#' @importFrom data.table copy setattr
 periodic.data.frame <- function(object, ...) {
   cols <- as.list(substitute(list(...))[-1])
 
   if(length(cols) == 0) {
     warning("No columns defined. Returning unchanged data.")
     return(object)
+  }
+
+  if (.should.copy(object)) {
+    object <- data.table::copy(object)
   }
 
   iscol <- names(cols) %in% colnames(object)
@@ -87,8 +96,11 @@ periodic.data.frame <- function(object, ...) {
     if (r[1] < period[1] | r[2] > period[2]) {
       bad.cols <- c(bad.cols, names(cols)[i])
     } else {
-      attr(object[[names(cols)[i]]], "period") <- period
-      class(object[[names(cols)[i]]]) <- c("sticky", class(object[[names(cols)[i]]]))
+      data.table::setattr(object[[names(cols)[i]]], "period", period)
+      if (!inherits(object[[names(cols)[i]]], "sticky")) {
+        data.table::setattr(object[[names(cols)[i]]], "class", c("sticky", class(object[[names(cols)[i]]])))
+        # class(object[[names(cols)[i]]]) <- c("sticky", class(object[[names(cols)[i]]]))
+      }
     }
   }
   if (length(bad.cols) == length(cols)) {
@@ -101,14 +113,21 @@ periodic.data.frame <- function(object, ...) {
   }
 
   if (!inherits(object, "periodic_df")) {
-    class(object) <- c("periodic_df", class(object))
+    data.table::setattr(object, "class", c("periodic_df", class(object)))
+    # class(object) <-  c("periodic_df", class(object))
   }
-  object
+
+  if (.should.copy(object)) {
+    return(object)
+  } else {
+    return(invisible(object))
+  }
 }
 
 
 #' @export
 print.periodic_df <- function(x, ...) {
+  if (data.table::shouldPrint(x)) {
   NextMethod("print")
   period <- get_period(x)
   for (i in seq_along(period)) {
@@ -116,5 +135,14 @@ print.periodic_df <- function(x, ...) {
         period[[i]][2], "]\n",
         sep = "")
   }
+  }
 }
 
+
+#' @export
+#' @rdname periodic
+setperiodic <- function(object, ...) {
+  old <- .set.copy(FALSE)
+  on.exit(.set.copy(old))
+  periodic(object, ...)
+}
