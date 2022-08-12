@@ -1,6 +1,6 @@
-5916b16fa34c614acafa106131b5e4b2 *DESCRIPTION
+0128de0f021a9881b9916140808ab26d *DESCRIPTION
 be8e5cd7f95b2fc4fe828e1055446b5a *NAMESPACE
-807a52777e6283d0e6e5d2d40cf0b903 *NEWS.md
+1245f3e3d8b92e8ab2ac4626fb8afc21 *NEWS.md
 9d90f191e42c81e97026ddc4b78896c6 *R/dplyr-methods-auto.R
 9a64816f4913221ecda4443f085ee683 *R/dplyr-methods-manual.R
 3a7765d512123d070e0d60ecb643756b *R/fortify.R
@@ -13,15 +13,15 @@ a7711c46430b25390ae94be6a5e47f69 *R/ggperiodic.R
 af3d95e3bf87360130996218604a1677 *R/utils.R
 90f361a4fcd6471fc6f08ff3d4d07e24 *R/wrap.R
 87518eb86fc363369d0ee4bfa347acba *README.md
-1c698c40b3ef118bfb26241570034430 *build/vignette.rds
+b0e9058fef512822ce787cfa9f4f9b4e *build/vignette.rds
 76445628c89c3a0bca96babdb5a20737 *inst/doc/wraping-around-ggplot2.R
 23ad092f6a74e1a03352d44856cc9b24 *inst/doc/wraping-around-ggplot2.Rmd
-2cab88d65cf02d5eb29f354929efd97f *inst/doc/wraping-around-ggplot2.html
+4dc0c26d744f502bf7458b0e8913c83a *inst/doc/wraping-around-ggplot2.html
 28e612caa87f556a29307c54d5324970 *man/figures/README-unnamed-chunk-2-1.png
 d8bfc9b2011e1ec31837723623ada87b *man/figures/README-unnamed-chunk-3-1.png
 674d4a965358ad534259b484fd89932c *man/figures/logo.png
 19a20a3261d2c304ed5fd70b26143321 *man/get_period.Rd
-3763e6b052afe4e1cd2ad2d6218dfc8f *man/ggperiodic.Rd
+bc1f3e6c29396e90a9edf0f2ee0f8905 *man/ggperiodic.Rd
 b716e73c52cbf8026373d7450890630d *man/is.periodic.Rd
 08e7479e939a1c08f8093d9c300df816 *man/periodic.Rd
 4eb0343c5e16d6841a987d466f1b1d94 *man/qwrap.Rd
